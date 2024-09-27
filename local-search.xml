@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>操作系统-中断和异常</title>
+    <link href="/blog/2021/03/28/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%B8%AD%E6%96%AD%E5%92%8C%E5%BC%82%E5%B8%B8/"/>
+    <url>/blog/2021/03/28/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%B8%AD%E6%96%AD%E5%92%8C%E5%BC%82%E5%B8%B8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><img src="/blog/2021/03/28/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%B8%AD%E6%96%AD%E5%92%8C%E5%BC%82%E5%B8%B8/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%B8%AD%E6%96%AD%E5%92%8C%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E6%80%BB%E8%A7%88.png" class="" title="操作系统-中断和异常知识总览"><h2 id="中断机制的诞生"><a href="#中断机制的诞生" class="headerlink" title="中断机制的诞生"></a>中断机制的诞生</h2><p><code>背景</code>：多道处理技术之前，各个程序只能串行，导致 CPU 大部分时间处理空转等待 I/O，效率低</p><p>解决方案：为了解决上述问题，人们发明了操作系统(作为计算机的管理者)，引入中断机制，实现多道程序并发执行</p><p><code>本质</code>：<code>发生中断</code>就意味着<code>需要操作系统介入开展管理资源调度工作</code></p><h2 id="中断的概念和作用"><a href="#中断的概念和作用" class="headerlink" title="中断的概念和作用"></a>中断的概念和作用</h2><p>先来看看一个多道程序技术中中断的工作流程示例：</p><img src="/blog/2021/03/28/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%B8%AD%E6%96%AD%E5%92%8C%E5%BC%82%E5%B8%B8/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%A4%9A%E9%81%93%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%AD%E6%96%AD%E5%B7%A5%E4%BD%9C%E7%A4%BA%E4%BE%8B.png" class="" title="操作系统-多道程序的中断工作示例"><p><code>总结</code>:<br>1、当中断发生时，CPU 立即进程<code>核心态</code><br>2、当中断发生后，当前进程暂停执行，同时由操作系统内核对中断信号进程处理<br>3、中断让操作系统获得控制权并进而开展资源调度工作，最后才能实现多道程序并发执行。</p><div class="note note-default">            <p>问：用户态、核心态之间的切换如何实现？</p><p><code>用户态 --&gt; 核心态</code>：只能通过<code>中断</code>实现<br><code>核心态 --&gt; 用户态</code>：可在<code>内核程序</code>或<code>应用程序的系统调用（归根到底还是内核程序）</code>中执行<code>特权指令</code>，对 PSW 进行设置</p>          </div><h1 id="中断的分类"><a href="#中断的分类" class="headerlink" title="中断的分类"></a>中断的分类</h1><div class="note note-default">            <p><code>内中断</code>：信号来源于 CPU 内部，与程序内容相关</p><ul><li>自愿中断–指令中断，如系统调用（trap 指令）</li><li>强迫中断<ul><li>硬件故障，如硬盘缺页</li><li>软件中断，如整数除 0</li></ul></li></ul><p><code>外中断</code>：信号来源于 CPU 外部，与程序内容无关</p><ul><li>外设中断，如 I/O 操作完成发出的中断信号</li><li>人工干预，如用户强行终止进程</li></ul>          </div><h1 id="外中断的处理过程"><a href="#外中断的处理过程" class="headerlink" title="外中断的处理过程"></a>外中断的处理过程</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>中断</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>中断</tag>
+      
+      <tag>异常</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>操作系统-运行机制和体系结构</title>
+    <link href="/blog/2021/03/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%92%8C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/"/>
+    <url>/blog/2021/03/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%92%8C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</url>
+    
+    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><img src="/blog/2021/03/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%92%8C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%92%8C%E4%BD%93%E7%B3%BB%E6%80%BB%E8%A7%88.png" class="" title="操作系统-运行机制和体系总览"><h2 id="什么是指令？"><a href="#什么是指令？" class="headerlink" title="什么是指令？"></a>什么是指令？</h2><p><code>CPU</code> 能识别并执行的最基本命令。</p><p>两种指令：</p><div class="note note-default">            <p>特权指令：如内存清零指令</p><p>非特权指令：如普通的运算指令</p>          </div><h2 id="CPU-如何判断当前是否可以执行特权指令？"><a href="#CPU-如何判断当前是否可以执行特权指令？" class="headerlink" title="CPU 如何判断当前是否可以执行特权指令？"></a>CPU 如何判断当前是否可以执行特权指令？</h2><p>用程序状态字寄存器中的<code>程序状态字</code>（<code>PSW</code>, Program Status Word）来标识当前处理器处于什么状态。如 <code>0 为用户态</code>，<code>1 为核心态</code>。</p><p>两种状态：</p><div class="note note-default">            <p>核心态（管态）：特权和非特权指令均可执行</p><p>用户态（目态）：此时 CPU 只能执行非特权指令</p>          </div><p>两种程序，内核程序和应用程序。</p><h2 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h2><p><code>内核</code>是计算机上配置的底层<code>软件</code>，是操作系统最基本、核心的部分。</p><img src="/blog/2021/03/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%92%8C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%86%85%E6%A0%B8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png" class="" title="操作系统-内核层次结构"><div class="note note-default">            <p>实现操作系统内核功能的那些程序就是<code>内核程序</code></p>          </div><h2 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h2><p>根据<code>内核</code>结构的不同，可延伸出连两种体系结构：<code>微内核</code>、<code>大内核</code></p><div class="note note-default">            <p><code>微内核</code>：只把最基本的功能保留（如时钟管理、中断管理和原语），结构清晰方便维护，但频繁在管态和目态切换所以性能低</p><p><code>大内核</code>：除了保留微内核的基本功能，还留有进程管理、处理器管理和设备管理，结构复杂不易于维护，但性能较高</p>          </div>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+      <category>运行机制</category>
+      
+      <category>中断处理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>中断</tag>
+      
+      <tag>操作系统</tag>
+      
+      <tag>运行机制</tag>
+      
+      <tag>体系结构</tag>
+      
+      <tag>指令</tag>
+      
+      <tag>内核</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>操作系统-发展和分类</title>
+    <link href="/blog/2021/03/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%8F%91%E5%B1%95%E5%92%8C%E5%88%86%E7%B1%BB/"/>
+    <url>/blog/2021/03/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%8F%91%E5%B1%95%E5%92%8C%E5%88%86%E7%B1%BB/</url>
+    
+    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><div class="note note-success">            <ul><li>操作系统的分类</li></ul>          </div><h2 id="手工操作阶段"><a href="#手工操作阶段" class="headerlink" title="手工操作阶段"></a>手工操作阶段</h2><div class="note note-default">            <p>主要缺点：用户独占全机、人机速度矛盾导致资源利用率低下</p>          </div><h2 id="批处理阶段–单道批处理系统"><a href="#批处理阶段–单道批处理系统" class="headerlink" title="批处理阶段–单道批处理系统"></a>批处理阶段–单道批处理系统</h2><p>引入脱机输入/输出技术（使用磁带完成），并<code>监督程序（操作系统雏形）</code>负责控制作业的输入、输出</p><div class="note note-default">            <p>主要优点：缓解人机速度矛盾，资源利用率提升。</p><p>主要缺点：<code>内存中只能有一道程序执行</code>，只有该程序运行结束之后才能进入下一道程序。<code>CPU 有大量的时间是在空闲等待 I/O 完成</code>，资源利用率依然很低。</p>          </div><h2 id="批处理阶段–多道批处理系统"><a href="#批处理阶段–多道批处理系统" class="headerlink" title="批处理阶段–多道批处理系统"></a>批处理阶段–多道批处理系统</h2><p>每次往内存中写入多道程序，<code>操作系统正式诞生</code>，并引入<code>中断</code>技术，由操作系统负责调度多道程序并发执行。</p><div class="note note-default">            <p>主要优点：多道程序<code>并发</code>执行，<code>共享</code>计算机资源，资源利用率大幅提升，CPU 和其他资源保持“忙碌”状态，系统吞吐量增大。</p><p>主要缺点：用户响应时间长，<code>没有人机交互功能</code>。(用户在提交作业后需要等待计算机处理完成，中间不能控制作业的执行)</p>          </div><img src="/blog/2021/03/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%8F%91%E5%B1%95%E5%92%8C%E5%88%86%E7%B1%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%8D%95%E3%80%81%E5%A4%9A%E9%81%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%A4%BA%E4%BE%8B.png" class="" title="操作系统-单、多道操作系统示例"><h2 id="分时操作系统"><a href="#分时操作系统" class="headerlink" title="分时操作系统"></a>分时操作系统</h2><p>计算机以<code>时间片</code>为单位轮流为各个用户/作业服务，各个用户可通过终端与计算机进行交互。</p><div class="note note-default">            <p>主要优点：用户请求即时响应，<code>解决了人机交互问题</code>。允许多个用户同时使用一台计算机。</p><p>主要缺点：<code>不能优先处理一些紧急任务</code>，操作系统对各个用户/作业都是完全公平的。</p>          </div><h2 id="实时操作系统"><a href="#实时操作系统" class="headerlink" title="实时操作系统"></a>实时操作系统</h2><span class="label label-success">解决及时响应紧急任务的问题。这类的紧急任务不需要时间片等待。</span><div class="note note-default">            <p>计算机系统接受到（外部）<code>中断</code>信号后及时响应处理，在严格的时限内处理完事件。</p><p>特点是<code>及时性</code>和<code>可靠性</code>。</p>          </div><img src="/blog/2021/03/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%8F%91%E5%B1%95%E5%92%8C%E5%88%86%E7%B1%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%B8%A4%E7%A7%8D%E5%AE%9E%E6%97%B6%E7%B3%BB%E7%BB%9F%E7%A4%BA%E4%BE%8B.png" class="" title="操作系统-两种实时系统示例"><h2 id="分布式操作系统"><a href="#分布式操作系统" class="headerlink" title="分布式操作系统"></a>分布式操作系统</h2><p>（待续…）</p><h2 id="知识回顾"><a href="#知识回顾" class="headerlink" title="知识回顾"></a>知识回顾</h2><img src="/blog/2021/03/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%8F%91%E5%B1%95%E5%92%8C%E5%88%86%E7%B1%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93.png" class="" title="操作系统-分类总结">]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>操作系统</tag>
+      
+      <tag>发展</tag>
+      
+      <tag>分类</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>操作系统-概念功能目标</title>
+    <link href="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/"/>
+    <url>/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/</url>
+    
+    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><div class="note note-success">            <ul><li>操作系统的概念</li><li>操作系统的功能和目标</li></ul>          </div><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E5%92%8C%E7%9B%AE%E6%A0%87-%E7%9F%A5%E8%AF%86%E6%80%BB%E8%A7%88.png" class="" title="操作系统-知识总览"><h2 id="操作系统的概念"><a href="#操作系统的概念" class="headerlink" title="操作系统的概念"></a>操作系统的概念</h2><div class="note note-default">            <p>直观的例子，打开（Mac 系统）活动监视器</p>          </div><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BD%AF%E7%A1%AC%E4%BB%B6%E7%AE%A1%E7%90%86%E7%9A%84%E7%A4%BA%E4%BE%8B.png" class="" title="操作系统-软硬件管理示例"><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5.png" class="" title="操作系统-概念"><div class="note note-default">            <p>教科书解释：操作系统(Operating System, OS) </p>          </div><pre><code class="mermaid" >【从中间往上下两边看】是指控制和管理整个计算机系统的硬件和软件资源，并合理的组织调度计算机的工作和资源的分配；【从下往上看】以提供给用户和其他软件方便的接口和环境；【从上往下看】它是计算机系统中最基本的系统软件。</code></pre><h2 id="操作系统的功能和目标"><a href="#操作系统的功能和目标" class="headerlink" title="操作系统的功能和目标"></a>操作系统的功能和目标</h2><div>            <input type="checkbox" disabled ><span style="margin-left: 16px;">操作系统作为系统资源的管理者（这些资源包括软件、硬件、文件等），需要提供什么功能？</span>          </div><div>            <input type="checkbox" disabled ><span style="margin-left: 16px;">操作系统作为用户与计算机硬件之间的接口，需要为上层的用户、应用程序提供简单易用的服务，需要实现什么功能？</span>          </div><div>            <input type="checkbox" disabled ><span style="margin-left: 16px;">操作系统作为最接近硬件的层次，需要在纯硬件的基础上实现什么功能？</span>          </div><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%8A%9F%E8%83%BD%E5%92%8C%E7%9B%AE%E6%A0%87.png" class="" title="操作系统-功能和目标"><div class="note note-default">            <p>① 操作系统作为系统资源的管理者（这些资源包括软件、硬件、文件等），需要提供什么功能？</p>          </div><span class="label label-success">如下示例:进程是一个程序的执行过程，执行前需要`将程序放入内存中`,才能被 CPU 处理</span><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E8%80%85%E7%A4%BA%E4%BE%8B.png" class="" title="操作系统-资源管理者示例"><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%BD%9C%E4%B8%BA%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85.png" class="" title="操作系统-系统资源管理者"><div class="note note-default">            <p>② 操作系统作为用户与计算机硬件之间的接口，需要为上层的用户、应用程序提供简单易用的服务，需要实现什么功能？</p>          </div><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%BD%9C%E4%B8%BA%E7%94%A8%E6%88%B7%E5%92%8C%E7%A1%AC%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E6%8E%A5%E5%8F%A3.png" class="" title="操作系统-作为用户和硬件之间的接口"><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%94%A8%E6%88%B7%E6%8E%A5%E5%8F%A3%E7%A4%BA%E4%BE%8B.png" class="" title="操作系统-用户接口示例"><div class="note note-default">            <p>③ 操作系统作为最接近硬件的层次，需要在纯硬件的基础上实现什么功能？</p>          </div><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%BD%9C%E4%B8%BA%E6%9C%80%E6%8E%A5%E8%BF%91%E7%A1%AC%E4%BB%B6%E7%9A%84%E5%B1%82%E6%AC%A1.png" class="" title="操作系统-作为最接近硬件的层次"><h2 id="知识回顾"><a href="#知识回顾" class="headerlink" title="知识回顾"></a>知识回顾</h2><img src="/blog/2021/02/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8A%9F%E8%83%BD%E7%9F%A5%E8%AF%86%E5%9B%9E%E9%A1%BE.png" class="" title="操作系统-概念和功能知识回顾">]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>操作系统</tag>
+      
+      <tag>功能</tag>
+      
+      <tag>目标</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>操作系统-基本特征</title>
+    <link href="/blog/2021/02/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/"/>
+    <url>/blog/2021/02/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/</url>
+    
+    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><div class="note note-success">            <ul><li>操作系统的四个基本特征</li></ul>          </div><img src="/blog/2021/02/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%89%B9%E5%BE%81%E6%80%BB%E8%A7%88.png" class="" title="操作系统-四个基本特征"><h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><div class="note note-default">            <p>指多个程序在同一<code>时间间隔内</code>发生，这些程序在<code>宏观上是同时发生</code>的。但<code>微观上是交替发生</code>的。</p>          </div><span class="label label-warning">容易混淆概念--并行: 指多个程序在同一时刻发生。</span><pre><code class="mermaid" >一个单核处理机（CPU）同一时刻只能执行一个程序因此需要操作系统负责协调多个程序交替执行（微观）对于用户看起来是同时执行（宏观）</code></pre><span class="label label-success">操作系统就是伴随“多道程序技术”而出现的。因此，操作系统和程序并发是一起诞生的。</span><h2 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h2><div class="note note-default">            <p>即资源共享，指系统中的资源可供内存中多个并发执行的进程共同使用。</p>          </div><img src="/blog/2021/02/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%85%B1%E4%BA%AB.png" class="" title="操作系统-共享"><pre><code class="mermaid" >* 互斥共享： 微信和 QQ 无法同时开启摄像头* 分时共享： 微信和 QQ "同时"传送硬盘里的文件</code></pre><img src="/blog/2021/02/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%B9%B6%E5%8F%91%E5%92%8C%E5%85%B1%E4%BA%AB%E7%9A%84%E5%85%B3%E7%B3%BB.png" class="" title="操作系统-并发和共享的关系"><h2 id="虚拟"><a href="#虚拟" class="headerlink" title="虚拟"></a>虚拟</h2><div class="note note-default">            <p>把物理计算资源抽象成若干个逻辑上的对应物，按时间片轮转供多个程序使用。</p>          </div><img src="/blog/2021/02/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%99%9A%E6%8B%9F%E7%A4%BA%E4%BE%8B.png" class="" title="操作系统-虚拟示例"><pre><code class="mermaid" >* 时分复用： 微观上，CPU 在各个足够小的时间片内交替为各个进程服务* 空分复用： 虚拟存储技术</code></pre><h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><div class="note note-default">            <p>在多道程序环境下，允许多个程序并发执行，由于资源有限，进程的执行过程不是一贯到底而是走走停停，以不可预知的速度向前推进。</p>          </div><h2 id="知识回顾"><a href="#知识回顾" class="headerlink" title="知识回顾"></a>知识回顾</h2><img src="/blog/2021/02/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%89%B9%E5%BE%81%E7%9F%A5%E8%AF%86%E5%9B%9E%E9%A1%BE.png" class="" title="操作系统-特征知识回顾">]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>操作系统</tag>
+      
+      <tag>特征</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>gitalk-auto-init</title>
+    <link href="/blog/2021/01/18/gitalk-auto-init/"/>
+    <url>/blog/2021/01/18/gitalk-auto-init/</url>
+    
+    <content type="html"><![CDATA[<p>  <a title="计算机基础" href="javascript:void(0);">    <img style="display:inline-block;" alt="计算机基础" src="https://img.shields.io/badge/计算机基础-多路复用-orange?style=flat">  </a>  <a title="License" href="javascript:void(0);">    <img style="display:inline-block;" alt="License" src="https://img.shields.io/github/license/fluid-dev/hexo-theme-fluid.svg?style=flat">  </a></p><span class="label label-danger">danger aa</span><div>            <input type="checkbox" disabled checked="checked"><span style="margin-left: 16px;">熟悉</span>          </div>            <input type="checkbox" disabled ><span style="margin-left: 16px;">了解</span>                      <input type="checkbox" disabled checked="checked"><span style="margin-left: 16px;">精通</span>          <pre><code class="mermaid" >这是一个大长块文字</code></pre><div class="note note-info">            <p>info 提示块标签</p>          </div><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><hr><p><em>斜体</em><br><strong>粗体</strong><br><strong><em>粗斜体</em></strong></p><p><del>删除线文本</del></p><blockquote><p><strong>这篇文章涵盖的知识点</strong><br>第一段<br>第二段引用的内容</p></blockquote><p><u>下划线文本</u></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>():</span><br>    <span class="hljs-keyword">pass</span><br></code></pre></td></tr></table></figure><ul><li>无序第一项<ol><li>有序子列表 1</li><li>有序子列表 2</li></ol></li><li>无序第二项</li></ul><ol><li>有序第一项<ol><li>子列表 1</li><li>子列表 2</li></ol></li><li>有序第二项<ul><li>无序子列表 1</li><li>无序子列表 2</li></ul></li></ol><p>这是一段普通的文本，其中高亮 <code>python</code> 代码块</p><p>这是超链接示例: <a href="https://www.baidu.com/">百度搜索</a></p><p>表格示例<br>| 参数 | 类型 | 值 |<br>| :—- | :—- | :—- |<br>| name | char | 必填 |<br>| age | int | 选填 |</p><p>转义字符<br>&gt;<br>\<br>* 星号<br># 井字号<br>+ 加号<br>- 减号</p><p><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs flow">st&#x3D;&gt;start: 开始框<br>op&#x3D;&gt;operation: 处理框<br>cond&#x3D;&gt;condition: 判断框(是或否?)<br>sub1&#x3D;&gt;subroutine: 子流程<br>io&#x3D;&gt;inputoutput: 输入输出框<br>e&#x3D;&gt;end: 结束框<br>st-&gt;op-&gt;cond<br>cond(yes)-&gt;io-&gt;e<br>cond(no)-&gt;sub1(right)-&gt;op<br>​&#96;&#96;&#96;<br><br><br><br>&#123;% asset_img post-by-portal.png post-by-portal %&#125;<br>&#123;% asset_img post-by-script.png post-by-script %&#125;<br><br>&#96;&#96;&#96;python<br>#!&#x2F;usr&#x2F;bin&#x2F;env python<br># -*- coding: utf-8 -*-<br><br>import requests<br>import json<br><br>def run():<br>    username &#x3D; &#39;MengjieLee&#39;<br>    repo_name &#x3D; &#39;blog&#39;<br>    session &#x3D; requests.Session()<br>    session.auth &#x3D; (&#39;MengjieLee&#39;, &#39;Authorization: token xx&#39;)<br>    session.headers &#x3D; &#123;<br>        &#39;Accept&#39;: &#39;application&#x2F;vnd.github.v3+json&#39;,<br>        &#39;User-Agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;85.0.4183.59 Safari&#x2F;537.36 Edg&#x2F;85.0.564.30&#39;<br>    &#125;<br><br>    issue &#x3D; &#123;<br>        &#39;title&#39;: &#39;Python 3.6-内置函数 - Hexo&#39;,<br>        &#39;body&#39;: &#39;https:&#x2F;&#x2F;mengjielee.github.io&#x2F;blog&#x2F;2021&#x2F;01&#x2F;17&#x2F;Python-3-6-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0&#x2F;&#39;,<br>        &#39;labels&#39;: [&#39;Gitalk&#39;, &#39;c5bc3c467c6cf4ae08433c846478c9bb&#39;]<br>    &#125;<br>    github_url &#x3D; &quot;https:&#x2F;&#x2F;api.github.com&#x2F;repos&#x2F;&quot; + username + &quot;&#x2F;&quot; + repo_name + &quot;&#x2F;issues&quot;<br>    resp &#x3D; session.post(url&#x3D;github_url, data&#x3D;json.dumps(issue))<br>    print(resp)<br><br>if __name__ &#x3D;&#x3D; &#39;__main__&#39;:<br>    run()<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>github</category>
+      
+      <category>自动化</category>
+      
+      <category>第三方评论</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>bug</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>虚拟机</title>
+    <link href="/blog/2021/01/18/%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    <url>/blog/2021/01/18/%E8%99%9A%E6%8B%9F%E6%9C%BA/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Python-内置函数</title>
+    <link href="/blog/2021/01/17/Python-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/"/>
+    <url>/blog/2021/01/17/Python-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>MySQL 基础</title>
+    <link href="/blog/2021/01/17/MySQL-%E5%9F%BA%E7%A1%80/"/>
+    <url>/blog/2021/01/17/MySQL-%E5%9F%BA%E7%A1%80/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>数据库</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MySQL 基础</tag>
+      
+      <tag>基础</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>多路复用</title>
+    <link href="/blog/2021/01/16/%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/"/>
+    <url>/blog/2021/01/16/%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<p>  <a title="计算机基础" href="javascript:void(0);">    <img style="display:inline-block;" alt="计算机基础" src="https://img.shields.io/badge/计算机基础-多路复用-orange?style=flat">  </a>  <a title="License" href="javascript:void(0);">    <img style="display:inline-block;" alt="License" src="https://img.shields.io/github/license/fluid-dev/hexo-theme-fluid.svg?style=flat">  </a></p><p>???</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机基础</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>并发</tag>
+      
+      <tag>原理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
