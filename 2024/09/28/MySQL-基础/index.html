@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-17 00:30" pubdate>
-        2021年1月17日 凌晨
+      <time datetime="2024-09-28 09:30" pubdate>
+        2024年9月28日 上午
       </time>
     </span>
   
@@ -239,7 +239,7 @@
 <h2 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h2><figure class="highlight sql"><figcaption><span>执行一条 select 查询语句</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> product <span class="hljs-keyword">where</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
 
 <p>上述 SQL 查询语句例子在 MySQL 内部发生了什么？带着这个问题我们继续往下看，先来一个上帝视角图，去认识其内部每一个”零件”具体是负责做什么的。</p>
-<img src="/blog/2021/01/17/MySQL-%E5%9F%BA%E7%A1%80/MySQL-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png" srcset="/blog/img/loading.gif" class="" title="执行一条查询语句的流程图">
+<img src="/blog/2024/09/28/MySQL-%E5%9F%BA%E7%A1%80/MySQL-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png" srcset="/blog/img/loading.gif" class="" title="执行一条查询语句的流程图">
 
 <p>可以看到， MySQL 的架构共分为两层：<code>Server 层</code> 和 <code>存储引擎层</code></p>
 <div class="note note-default">
@@ -295,7 +295,7 @@
 <h3 id="解析器"><a href="#解析器" class="headerlink" title="解析器"></a>解析器</h3><p>解析器会做 <code>词法分析</code> 和 <code>语法分析</code> 这两件事：<br>第一件事，<code>词法分析</code>。MySQL 会根据你输入的字符串识别出关键字出来，例如，SQL 语句 <code>select username from userinfo</code>，在分析之后，会得到 4 个 token，其中有 2 个 keyword，分别是<code>select</code>和<code>from</code>：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">+</span><span class="hljs-comment">---------+----------+-------+---------+</span><br><span class="hljs-operator">|</span>  关键字  <span class="hljs-operator">|</span> 非关键字  <span class="hljs-operator">|</span> 关键字 <span class="hljs-operator">|</span> 非关键字  <span class="hljs-operator">|</span><br><span class="hljs-operator">+</span><span class="hljs-comment">---------+----------+-------+----------+</span><br><span class="hljs-operator">|</span>  <span class="hljs-keyword">select</span> <span class="hljs-operator">|</span> username <span class="hljs-operator">|</span> <span class="hljs-keyword">from</span>  <span class="hljs-operator">|</span> userinfo <span class="hljs-operator">|</span><br><span class="hljs-operator">+</span><span class="hljs-comment">---------+----------+-------+----------+</span><br></code></pre></td></tr></table></figure>
 <p>第二件事，<code>语法分析</code>。分句词法分析的结果，语法解析器会根据语法规则，判断你输入的这个 SQL 语句是否满足 MySQL yu语法，如果没问题就会构建出 SQL 语法树，这样方便后续执行流程工作模块获取 SQL 类型、表名、字段名、where 条件等等。</p>
-<img src="/blog/2021/01/17/MySQL-%E5%9F%BA%E7%A1%80/MySQL-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90.png" srcset="/blog/img/loading.gif" class="" title="MySQL-语法分析">
+<img src="/blog/2024/09/28/MySQL-%E5%9F%BA%E7%A1%80/MySQL-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90.png" srcset="/blog/img/loading.gif" class="" title="MySQL-语法分析">
 
 <p>那么通常情况下，表不存在或者字段不存在，是在解析器做的吗？</p>
 <h2 id="第四部：执行-SQL"><a href="#第四部：执行-SQL" class="headerlink" title="第四部：执行 SQL"></a>第四部：执行 SQL</h2><p>经过解析器后，接着就要进入 SQL 查询语句的流程了，每条<code>select</code>查询语句流程重要可以分为下面三阶段：</p>
@@ -323,15 +323,15 @@
 </ul>
 <h4 id="主键索引查询"><a href="#主键索引查询" class="headerlink" title="主键索引查询"></a>主键索引查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> products <span class="hljs-keyword">where</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
 <p>这条查询语句用到了主键索引，而且是等值查询，同时主键 id 是唯一，不会有 id 相同的记录，所以优化器决定选用访问类型为<code>const</code>进行查询，也就是使用主键索引查询一条记录，那么执行器与存储引擎的交互细节如下：</p>
-<img src="/blog/2021/01/17/MySQL-%E5%9F%BA%E7%A1%80/%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95%E6%9F%A5%E8%AF%A2.png" srcset="/blog/img/loading.gif" class="" title="主键索引查询">
+<img src="/blog/2024/09/28/MySQL-%E5%9F%BA%E7%A1%80/%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95%E6%9F%A5%E8%AF%A2.png" srcset="/blog/img/loading.gif" class="" title="主键索引查询">
 
 <h4 id="全表扫描"><a href="#全表扫描" class="headerlink" title="全表扫描"></a>全表扫描</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> products <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;product_01&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>这样的查询语句的查询条件没有用到索引，所以优化器决定选用访问类型为<code>ALL</code>进行查询,这时候执行器与存储引擎的执行流程是这样的：</p>
-<img src="/blog/2021/01/17/MySQL-%E5%9F%BA%E7%A1%80/%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F.png" srcset="/blog/img/loading.gif" class="" title="全表扫描">
+<img src="/blog/2024/09/28/MySQL-%E5%9F%BA%E7%A1%80/%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F.png" srcset="/blog/img/loading.gif" class="" title="全表扫描">
 
 <h4 id="索引下推"><a href="#索引下推" class="headerlink" title="索引下推"></a>索引下推</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">mysql<span class="hljs-operator">&gt;</span> explain <span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> powerx.users <span class="hljs-keyword">where</span> username <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;user%&#x27;</span> <span class="hljs-keyword">and</span> email <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;user2@example.com&#x27;</span>;<br><span class="hljs-operator">+</span><span class="hljs-comment">----+-------------+-------+------------+-------+--------------------+--------------------+---------+------+------+----------+-----------------------+</span><br><span class="hljs-operator">|</span> id <span class="hljs-operator">|</span> select_type <span class="hljs-operator">|</span> <span class="hljs-keyword">table</span> <span class="hljs-operator">|</span> partitions <span class="hljs-operator">|</span> type  <span class="hljs-operator">|</span> possible_keys      <span class="hljs-operator">|</span> key                <span class="hljs-operator">|</span> key_len <span class="hljs-operator">|</span> <span class="hljs-keyword">ref</span>  <span class="hljs-operator">|</span> <span class="hljs-keyword">rows</span> <span class="hljs-operator">|</span> filtered <span class="hljs-operator">|</span> Extra                 <span class="hljs-operator">|</span><br><span class="hljs-operator">+</span><span class="hljs-comment">----+-------------+-------+------------+-------+--------------------+--------------------+---------+------+------+----------+-----------------------+</span><br><span class="hljs-operator">|</span>  <span class="hljs-number">1</span> <span class="hljs-operator">|</span> SIMPLE      <span class="hljs-operator">|</span> users <span class="hljs-operator">|</span> <span class="hljs-keyword">NULL</span>       <span class="hljs-operator">|</span> <span class="hljs-keyword">range</span> <span class="hljs-operator">|</span> idx_username_email <span class="hljs-operator">|</span> idx_username_email <span class="hljs-operator">|</span> <span class="hljs-number">404</span>     <span class="hljs-operator">|</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">|</span>    <span class="hljs-number">5</span> <span class="hljs-operator">|</span>    <span class="hljs-number">20.00</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">Using</span> index <span class="hljs-keyword">condition</span> <span class="hljs-operator">|</span><br><span class="hljs-operator">+</span><span class="hljs-comment">----+-------------+-------+------------+-------+--------------------+--------------------+---------+------+------+----------+-----------------------+</span><br><span class="hljs-number">1</span> <span class="hljs-type">row</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">set</span>, <span class="hljs-number">1</span> warning (<span class="hljs-number">0.00</span> sec)<br></code></pre></td></tr></table></figure>
 <p>联合索引当遇到范围查询（&gt;,&lt;）就会停止匹配，也就是<code>username</code>字段能用到联合索引，但是<code>email</code>字段则无法利用到索引。（因为范围查询之后的字段可能存在无序情况，具体分析原因见后面章节）</p>
-<img src="/blog/2021/01/17/MySQL-%E5%9F%BA%E7%A1%80/%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8.png" srcset="/blog/img/loading.gif" class="" title="索引下推">
+<img src="/blog/2024/09/28/MySQL-%E5%9F%BA%E7%A1%80/%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8.png" srcset="/blog/img/loading.gif" class="" title="索引下推">
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>执行一条 SQL 查询语句，期间发生了什么?</p>
 <ul>
@@ -377,9 +377,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2021/01/17/Python-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/">
+                      <a href="/blog/2024/09/29/MySQL-%E7%B4%A2%E5%BC%95/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Python-内置函数</span>
+                        <span class="hidden-mobile">MySQL 索引</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -387,8 +387,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2021/01/17/MySQL-%E7%B4%A2%E5%BC%95/">
-                        <span class="hidden-mobile">MySQL 索引</span>
+                      <a href="/blog/2021/03/28/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E4%B8%AD%E6%96%AD%E5%92%8C%E5%BC%82%E5%B8%B8/">
+                        <span class="hidden-mobile">操作系统-中断和异常</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
