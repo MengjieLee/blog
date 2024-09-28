@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.6k 字
+      2.7k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      30
+      31
        分钟
     </span>
   
@@ -313,7 +313,7 @@
 
 <p>现在给 products 表的 name 字段设置为普通索引（二级索引）：<br>这样就会出现查询语句的结果既可以使用主键索引，也可以使用普通索引，但是执行的效率会不用，这时，就需要<code>优化器</code>来决定使用哪个索引了。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">mysql<span class="hljs-operator">&gt;</span> explain <span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> powerx.products <span class="hljs-keyword">where</span> id <span class="hljs-operator">&gt;</span> <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> name <span class="hljs-keyword">like</span> &quot;t%&quot;;<br><span class="hljs-operator">+</span><span class="hljs-comment">----+-------------+----------+------------+-------+-----------------------+-------------+---------+------+------+----------+----------------------------+</span><br><span class="hljs-operator">|</span> id <span class="hljs-operator">|</span> select_type <span class="hljs-operator">|</span> <span class="hljs-keyword">table</span>    <span class="hljs-operator">|</span> partitions <span class="hljs-operator">|</span> type  <span class="hljs-operator">|</span> `possible_keys`       <span class="hljs-operator">|</span> `key`       <span class="hljs-operator">|</span> key_len <span class="hljs-operator">|</span> <span class="hljs-keyword">ref</span>  <span class="hljs-operator">|</span> <span class="hljs-keyword">rows</span> <span class="hljs-operator">|</span> filtered <span class="hljs-operator">|</span> `Extra`                    <span class="hljs-operator">|</span><br><span class="hljs-operator">+</span><span class="hljs-comment">----+-------------+----------+------------+-------+-----------------------+-------------+---------+------+------+----------+----------------------------+</span><br><span class="hljs-operator">|</span>  <span class="hljs-number">1</span> <span class="hljs-operator">|</span> SIMPLE      <span class="hljs-operator">|</span> products <span class="hljs-operator">|</span> <span class="hljs-keyword">NULL</span>       <span class="hljs-operator">|</span> <span class="hljs-keyword">range</span> <span class="hljs-operator">|</span> `<span class="hljs-keyword">PRIMARY</span>`,`idex_name` <span class="hljs-operator">|</span> `idex_name` <span class="hljs-operator">|</span> <span class="hljs-number">207</span>     <span class="hljs-operator">|</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">|</span>    <span class="hljs-number">1</span> <span class="hljs-operator">|</span>    <span class="hljs-number">60.00</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">Using</span> <span class="hljs-keyword">where</span>; `<span class="hljs-keyword">Using</span> index` <span class="hljs-operator">|</span><br><span class="hljs-operator">+</span><span class="hljs-comment">----+-------------+----------+------------+-------+-----------------------+-------------+---------+------+------+----------+----------------------------+</span><br><span class="hljs-number">1</span> <span class="hljs-type">row</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">set</span>, <span class="hljs-number">1</span> warning (<span class="hljs-number">0.00</span> sec)<br></code></pre></td></tr></table></figure>
-
+<p>很显然这条查询语句就是<code>覆盖索引</code>，直接在二级索引就能查找到结果（因为二级索引的B+树的叶子结点的数据存储的就是主键值），就没必要在主键索引查找了，因为查询成本对比之中，主键索引的 B+ 树 &gt; 查询二级索引的 B+ 树，所以优化器基于查询成本的考量，会选择查询代价小的二级索引。</p>
 
             </div>
             <hr>
