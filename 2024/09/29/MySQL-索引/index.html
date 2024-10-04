@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      388 字
+      899 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      9
        分钟
     </span>
   
@@ -262,12 +262,19 @@
 <li><code>字段个数</code>分类：单列索引、联合索引</li>
 </ul>
 <h3 id="数据结构分类"><a href="#数据结构分类" class="headerlink" title="数据结构分类"></a>数据结构分类</h3><p>从数据结构的角度来看，MySQL 常见索引有 B+tree、Hash、Full-text</p>
-
+<img src="/blog/2024/09/29/MySQL-%E7%B4%A2%E5%BC%95/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%95%E6%93%8E%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%88%86%E7%B1%BB.png" srcset="/blog/img/loading.gif" class="">
 
 <p>InnoDB 在 MySQL 5.5 之后称谓默认引擎， B+tree 索引类型也是 MySQL 存储引擎采用最多的索引类型。<br>在创建表时， InnoDB 存储引擎会根据不同的场景选择不同的列作为索引：</p>
 <ul>
-<li></li>
+<li>如果有主键，默认会使用主键作为聚簇索引的索引键(key);</li>
+<li>如果没有主键，就选择第一个不包含<code>NULL</code>值的唯一列作为聚簇索引的索引键(key);</li>
+<li>在上面两个都没有的情况下，InnoDB 将自动生成一个隐式自增 id 列作为聚簇索引的索引键(key);</li>
 </ul>
+<p>其他索引都属于辅助索引(Secondary Index)，也称为二级索引或非聚簇索引。<br><code>创建的主键索引和二级索引默认使用的是 B+Tree 索引</code>。</p>
+<p>B+Tree 是一个种多叉树，叶子节点才存放数据，非叶子节点只存放索引，而且每个结点里的数据是<code>按主键顺序存档</code>的。每一层父节点的索引值都会出现在下层子结点的索引值种，因此在叶子节点中，包括了所有的索引值信息，<code>并且每一个叶子结点都有两个指针</code>,分别指向<code>下一个叶子结点</code>和<code>上一个叶子结点</code>，形成一个<code>双向链表</code>。</p>
+<p>数据库的<code>索引</code>和<code>数据</code>都是存储在硬盘的，我们可以把读取一个结点当做一次磁盘 I/O 操作。B+Tree 先比与 B 树和二叉树来说，最大的优势在于<code>查询效率很高，因为即使在数据量很大的情况，查询一个数据的磁盘 I/O 依然维持在 3-4次</code>。</p>
+<h4 id="回表"><a href="#回表" class="headerlink" title="回表"></a>回表</h4><p>如果用二级索引查询，会先检查二级索引中的 B+Tree 的索引值，在找到对应叶子节点然后获取的是主键值，然后在通过<code>主键索引的 B+Tree 树</code>找到目标主键值对应的整行数据。这个过程叫<code>回表</code>，也就是说要查 2 个 B+Tree 才能查到数据。</p>
+<h4 id="索引覆盖"><a href="#索引覆盖" class="headerlink" title="索引覆盖"></a>索引覆盖</h4><p>特别地，当查询的数据是能在二级索引的 B+Tree 的叶子节点里查询到，这时就不用再去处理主键索引查询。</p>
 
             </div>
             <hr>
