@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.3k 字
+      2.7k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      24
+      28
        分钟
     </span>
   
@@ -314,7 +314,24 @@
 <p>当你查询的执行计划里，Extra 字段出现<code>Using index condition</code>，那么说明使用了索引下推的优化。</p>
 <h5 id="索引区分度"><a href="#索引区分度" class="headerlink" title="索引区分度"></a>索引区分度</h5><p>建立联合索引时的字段顺序，对索引效率也有很大影响。越靠前的字段被用于索引过滤的概率越高，实际开发工作中<code>建立联合索引时，要把区分度大的字段盘在前面</code>。如<code>UUID</code>字段。</p>
 <p>区分度就是某个字段 column 不同值的个数除以表总行数，计算公式如下：<br><code>区分度 = distinct(column) / count(*)</code></p>
-<h2 id="创建索引的场景"><a href="#创建索引的场景" class="headerlink" title="创建索引的场景"></a>创建索引的场景</h2>
+<h2 id="创建索引的场景"><a href="#创建索引的场景" class="headerlink" title="创建索引的场景"></a>创建索引的场景</h2><p>索引的最大好处就是<code>提高查询速度</code>,但是也有缺点：</p>
+<ul>
+<li>需要占用物理空间，数量越大，占用空间越大</li>
+<li>创建索引和维护索引需要耗费时间，这种时间还会伴随着数据量的增加而增大</li>
+<li>降低表的 CRUD 效率，因为每次 CRUD 索引，B+Tree 为了维护索引有序性，都需要进行动态调整</li>
+</ul>
+<h3 id="什么时候适用索引？"><a href="#什么时候适用索引？" class="headerlink" title="什么时候适用索引？"></a>什么时候适用索引？</h3><ul>
+<li>字段有唯一性限制，比如商品编码、用户 uuid</li>
+<li>经常用于<code>WHERE</code>查询条件的字段，如果查询条件不是一个列，可以建立联合索引</li>
+<li>经常用于<code>GROUP BY</code> 和 <code>ORDER BY</code>的字段，这样在查询的时候就不需要再去做一次排序(filesort)了，因为简历索引之后 B+Tree 的叶子节点中记录都是有序排列好的</li>
+</ul>
+<h3 id="什么时候不需要创建索引？"><a href="#什么时候不需要创建索引？" class="headerlink" title="什么时候不需要创建索引？"></a>什么时候不需要创建索引？</h3><ul>
+<li>存在大量重复数据，不需要创建索引，比如性别字段</li>
+<li>表数据太少的时候，不需要创建索引</li>
+<li><code>WHERE、GROUP BY、ORDER BY</code> 里用不到的字段，就不需要浪费物理空间去创建索引</li>
+<li>经常更新的字段，比如用户积分或账户余额，就不需要创建索引，因为索引字段频繁修改，由于 B+Tree 会自适应维护有序性，那么就需要频繁的重建索引，这个过程是会大大影响数据库的性能</li>
+</ul>
+<h3 id="有什么优化索引的方法？"><a href="#有什么优化索引的方法？" class="headerlink" title="有什么优化索引的方法？"></a>有什么优化索引的方法？</h3>
             </div>
             <hr>
             <div>
