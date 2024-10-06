@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      997 字
+      1.1k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      11
        分钟
     </span>
   
@@ -272,16 +272,22 @@
 <li><code>不可重复读（non-repeatable read）</code></li>
 <li><code>幻读（phantom read）</code></li>
 </ul>
-<h3 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h3><p>如果一个事务B<code>读到</code>了另一个事务A<code>未提交事务修改过的数据</code>，就意味着发生了<code>脏读</code>现象。如下所示：</p>
+<h3 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h3><p>如果<code>一个事务B内读到</code>了另一个事务A<code>未提交事务修改过的数据</code>，就意味着发生了<code>脏读</code>现象。如下所示：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">事务A<span class="hljs-comment">--&gt;启动事务--&gt;读取余额--&gt;更新余额--&gt;触发回滚-----&gt;结束</span><br>数据库<span class="hljs-comment">------------ 100 ------ 200 ---- `100` ---------</span><br>事务B<span class="hljs-comment">--&gt;启动事务----------&gt;读取余额`200`------------&gt;结束</span><br></code></pre></td></tr></table></figure>
 <p>因为事务A是还没提交更新事务，随时可能发生回滚，事务B所得到的数据就是过期的数据，这种现象就称谓<code>脏读</code>。</p>
-<h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>如果一个事务内多次读取同一个数据，如果出现前后两次读出的数据不一样的情况，就意味着发生了<code>不可重复读</code>现象。如下所示：</p>
+<h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>如果<code>一个事务内多次读取同一个数据</code>，如果出现前后两次读出的数据不一样的情况，就意味着发生了<code>不可重复读</code>现象。如下所示：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">事务A<span class="hljs-comment">--&gt;启动事务--&gt;读取余额-----&gt;更新余额--&gt;提交事务---------&gt;结束</span><br>数据库<span class="hljs-comment">-----------    100   ------       `200`     ------------</span><br>事务B<span class="hljs-comment">--&gt;启动事务--&gt;读取余额`100`---&gt;读取余额`200`  ---------&gt;结束</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>如果一个事务内多次查询某个复合查询条件的结果出现不一致，则意味着发生了<code>幻读</code>现象.</p>
+<h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>如果<code>一个事务内多次查询某个符合查询条件的记录数量出现不一致</code>，则意味着发生了<code>幻读</code>现象.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">事务A<span class="hljs-comment">--&gt;启动事务--&gt;读取价格大于100的商品数量-----&gt;插入一条价格为150商品---&gt;提交事务---------&gt;结束</span><br>数据库<span class="hljs-comment">------------        `10`         ------              `11`            -----------</span><br>事务B<span class="hljs-comment">--&gt;启动事务--&gt;读取价格大于100的商品数量`10`--&gt;读取价格大于100的商品数量`11`  ----------&gt;结束</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="事务的隔离级别有哪些？"><a href="#事务的隔离级别有哪些？" class="headerlink" title="事务的隔离级别有哪些？"></a>事务的隔离级别有哪些？</h2><p>TODO</p>
+<h2 id="事务的隔离级别有哪些？"><a href="#事务的隔离级别有哪些？" class="headerlink" title="事务的隔离级别有哪些？"></a>事务的隔离级别有哪些？</h2><p>当多个实物并发执行时，可能会遇到<code>脏读</code>，<code>不可重复读</code>和<code>幻读</code>，这些现象会对实物的一致性产生不同的影响：</p>
+<ul>
+<li>脏读：读到其他事务未提交的数据</li>
+<li>不可重复读：前后读取的数据结果不一致（类似幂等性不一致）</li>
+<li>幻读：前后读取的记录数量不一致</li>
+</ul>
+<p>TODO</p>
 
             </div>
             <hr>
