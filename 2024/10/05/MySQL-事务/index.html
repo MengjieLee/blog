@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.2k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      12
        分钟
     </span>
   
@@ -286,6 +286,14 @@
 <li>脏读：读到其他事务未提交的数据</li>
 <li>不可重复读：前后读取的数据结果不一致（类似幂等性不一致）</li>
 <li>幻读：前后读取的记录数量不一致</li>
+</ul>
+<p>此三个现象的严重排序如下：<br>脏读 &gt; 不可重复读 &gt; 幻读</p>
+<p>SQL 标准提出了四种隔离级别来规避这些现象（隔离级别越高，性能效率越低）：</p>
+<ul>
+<li>读未提交（read uncommitted）</li>
+<li>读提交（read committed）</li>
+<li>可重复读（repeatable read）</li>
+<li>串行化（serializable）</li>
 </ul>
 <p>TODO</p>
 
