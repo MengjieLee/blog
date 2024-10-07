@@ -315,8 +315,8 @@
 <p>这四种隔离级别具体是如何实现的？</p>
 <ul>
 <li><code>读未提交</code>，直接读取最新的数据</li>
-<li><code>读提交</code>，<code>每个语句执行前</code>都会重新生成一个<code>Read View</code></li>
-<li><code>可重复读</code>，<code>启动事务时</code>生成一个<code>Read View</code>，然后整个事务期间都用这个 read view</li>
+<li><code>读提交</code>，[Read View 机制] <code>每个语句执行前</code>都会重新生成一个<code>Read View</code></li>
+<li><code>可重复读</code>，[Read View 机制] <code>启动事务时</code>生成一个<code>Read View</code>，然后整个事务期间都用这个 read view</li>
 <li><code>串行化</code>，加读写锁避免并行访问</li>
 </ul>
 <p>执行<code>开始事务</code>命令，并不意味着启动了事务。在 MySQL 有两种开启事务的命令：</p>
