@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      2.5k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      27
        分钟
     </span>
   
@@ -359,7 +359,14 @@
 </li>
 </ul>
 <p>上述通过<code>版本链</code>来控制并发事务访问同一个记录的行为就叫 MVCC（Multi-Version Concurrency Control，多版本并发控制）</p>
-<h2 id="可重复读是如何工作的"><a href="#可重复读是如何工作的" class="headerlink" title="可重复读是如何工作的?"></a>可重复读是如何工作的?</h2><p>TODO</p>
+<h2 id="可重复读是如何工作的"><a href="#可重复读是如何工作的" class="headerlink" title="可重复读是如何工作的?"></a>可重复读是如何工作的?</h2><p><code>可重复读隔离级别是启动事务时生成一个 Read View，然后整个事务期间都在用这个 Read View</code></p>
+<ul>
+<li>事务A在查询 example 记录过程中，事务B的 update 语句修改 example 记录会生成相应的 undo log，并以链表的方式串联起来，形成<code>版本链</code>（以前的 example 记录就变成旧版本记录，于是最新版记录和旧版本记录通过链表方式串起来。）</li>
+<li>事务A后续去读取 example 记录时，会发现 example 记录的 trx_id 在 min_trx_id 和 max_trx_id 之间，则需要进一步判断 trx_id 是否在 m_ids 范围内。判断结果是在的那么这条记录时被修改但未提交的活跃事务，此时事务A不会读取这个版本记录。</li>
+<li>接着沿着 undo log 版本链往下找旧版本的记录，<code>直到找到 trx_id 小于 事务A 的 Read View 的 min_trx_id 值的第一条版本的记录</code>。</li>
+<li>最后事务 B 更新提交后，事务A查询读取记录时，还是基于启动事务时创建的 Read View 来判断当前版本记录是否可见。</li>
+</ul>
+<h2 id="读提交是如何工作的？"><a href="#读提交是如何工作的？" class="headerlink" title="读提交是如何工作的？"></a>读提交是如何工作的？</h2><p>TODO</p>
 
             </div>
             <hr>
