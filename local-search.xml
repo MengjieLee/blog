@@ -8,7 +8,7 @@
     <link href="/blog/2024/10/11/MySQL-%E9%94%81/"/>
     <url>/blog/2024/10/11/MySQL-%E9%94%81/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h2 id="MySQL-有哪些锁"><a href="#MySQL-有哪些锁" class="headerlink" title="MySQL 有哪些锁"></a>MySQL 有哪些锁</h2><p>根据加锁的范围，可分为<code>行锁</code>、<code>表锁</code>和<code>全局锁</code><br>TODO</p>]]></content>
     
     
     
