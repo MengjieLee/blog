@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.7k 字
+      2.8k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      29
+      30
        分钟
     </span>
   
@@ -372,6 +372,7 @@
 <li>快照读 MVCC</li>
 <li>当前读 next-key lock 记录锁+间隙锁</li>
 </ul>
+<p><code>MySQL 可重复读隔离级别并没有彻底解决幻读，只是很大程度避免了幻读现象的发生</code><br>要避免这类特殊场景下发生幻读的现象，就是尽量在开启事务之后，立即执行 select…for update 这类当前读的语句，因为它会对记录加 next-key lock，从而避免其他事务插入新记录。</p>
 
             </div>
             <hr>
@@ -403,6 +404,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/blog/2024/10/11/MySQL-%E9%94%81/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL-锁</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
