@@ -190,8 +190,15 @@
           
             
           
-          MySQL 有哪些锁根据加锁的范围，可分为行锁、表锁和全局锁TODO
+          MySQL 有哪些锁根据加锁的范围，可分为全局锁、行锁和表锁
+全局锁
+            全局锁是怎么用的？
+          
 
+flush tables with read lock 执行全局锁，整个数据库就处于只读状态，此时其他线程执行如下操作都被阻塞：
+
+对数据的增删改操作，比如 insert、delete、update 等语句
+对表结构的更改操作，比如 alter table、dr
         </a>
       </p>
 

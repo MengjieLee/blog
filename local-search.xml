@@ -8,7 +8,7 @@
     <link href="/blog/2024/10/11/MySQL-%E9%94%81/"/>
     <url>/blog/2024/10/11/MySQL-%E9%94%81/</url>
     
-    <content type="html"><![CDATA[<h2 id="MySQL-有哪些锁"><a href="#MySQL-有哪些锁" class="headerlink" title="MySQL 有哪些锁"></a>MySQL 有哪些锁</h2><p>根据加锁的范围，可分为<code>行锁</code>、<code>表锁</code>和<code>全局锁</code><br>TODO</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="MySQL-有哪些锁"><a href="#MySQL-有哪些锁" class="headerlink" title="MySQL 有哪些锁"></a>MySQL 有哪些锁</h2><p>根据加锁的范围，可分为<code>全局锁</code>、<code>行锁</code>和<code>表锁</code></p><h3 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h3><div class="note note-default">            <p>全局锁是怎么用的？</p>          </div><p><code>flush tables with read lock</code> 执行全局锁，<code>整个数据库就处于只读状态</code>，此时其他线程执行如下操作都被阻塞：</p><ul><li>对<code>数据的增删改</code>操作，比如 insert、delete、update 等语句</li><li>对<code>表结构的更改</code>操作，比如 alter table、drop table 等语句</li></ul><p><code>unlock tables</code> 释放全局锁。另外，会话 session 断开后，全局锁会被自动释放</p><div class="note note-default">            <p>全局锁应用场景是什么？</p>          </div><p>全局锁主要应用于<code>全库逻辑备份</code>。</p><div class="note note-default">            <p>全局锁会带来什么影响？</p>          </div><p>意味着整个数据库都是只读状态。比如在备份期间，业务职能读数据，会造成业务停滞。</p><div class="note note-default">            <p>使用全局锁会影响业务，那有什么解决方案？</p>          </div><p>利用数据库的引擎的特点，比如 InnoDB ，默认支持<code>可重复读的隔离级别</code>，在其 MVCC 支持下，备份期间依然可以进行业务操作。</p><p>但是，对于其他不支持事务的引擎，在备份数据时就得避开业务高峰时间段，比如凌晨进行并采取<code>全局锁</code>的方法。</p><h3 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h3><p>TODO</p>]]></content>
     
     
     
