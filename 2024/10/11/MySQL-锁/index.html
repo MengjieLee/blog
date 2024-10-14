@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      562 字
+      1k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      10
        分钟
     </span>
   
@@ -269,8 +269,15 @@
 <div class="note note-default">
             <p>MDL 不需要显式调用，那么是什么时候释放？</p>
           </div>
-<p>MDL 是在事务提交后才会释放，这意味着<code>事务执行期间，MDL 是一直持有的</code></p>
-<p>TODO</p>
+
+<p>MDL 是在事务提交后才会释放，这意味着<code>事务执行期间，MDL 是一直持有的</code><br>例，线程 A 启动事务但不提交（即<code>长事务</code>），执行 select 语句，此时给表加上 MDL 读锁,线程 B 陆续请求 select 不会阻塞，因为<code>读读</code>不冲突；但线程 C 修改表字段申请不到 MDL 写锁则会被阻塞，并且<code>之后所有的 select 语句</code>都会被阻塞，这样就会大量线程阻塞导致数据库异常断开。</p>
+<div class="note note-default">
+            <p>为什么线程 C 因申请不到 MDL 写锁，被阻塞后，而导致后续的申请读锁查询也会被阻塞？</p>
+          </div>
+<p>申请 MDL 锁的操作会形成一个队列，队列中<code>写锁获取优先级高于读锁</code>,一旦出现 MDL 写锁等待，因此会阻塞后续该表的所有 CRUD 操作。<br>解决方案：在对表结构变更前<code>看看数据库的长事务，是否有事务已经对表加了 MDL 读锁</code>，可以考虑 kill 掉这个长事务，然后进行表结构的变更。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql">在 MySQL 中，MDL（Metadata Lock, 即 lock_type <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;MDL&#x27;</span>）的锁模式（lock_mode）标识通常有以下几种：<br>`S`：共享（Shared）锁，允许多个事务同时持有该锁，用于读取操作。<br>`X`：独占（Exclusive）锁，只允许一个事务持有该锁，用于写入或修改操作。<br>`<span class="hljs-keyword">IS</span>`：意向共享（Intention Shared）锁，表示事务打算在表或行级别获取共享锁。<br>`IX`：意向独占（Intention Exclusive）锁，表示事务打算在表或行级别获取独占锁。<br>AUTO_INC：自增锁，用于控制自增值的分配。<br><br><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 查看数据库中锁的信息（因数据库版本不同略有差异）<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> performance_schema.data_locks;<br><br><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 查看数据库中等待锁的事务信息<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> performance_schema.data_lock_waits;<br><br><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 这里的 trx_id 是要终止的事务的事务 ID<br>KILL trx_id;<br></code></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>意向锁<br>TODO</p>
 
             </div>
             <hr>
