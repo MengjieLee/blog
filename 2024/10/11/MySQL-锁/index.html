@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.2k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      13
        分钟
     </span>
   
@@ -277,7 +277,15 @@
 <p>申请 MDL 锁的操作会形成一个队列，队列中<code>写锁获取优先级高于读锁</code>,一旦出现 MDL 写锁等待，因此会阻塞后续该表的所有 CRUD 操作。<br>解决方案：在对表结构变更前<code>看看数据库的长事务，是否有事务已经对表加了 MDL 读锁</code>，可以考虑 kill 掉这个长事务，然后进行表结构的变更。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql">在 MySQL 中，MDL（Metadata Lock, 即 lock_type <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;MDL&#x27;</span>）的锁模式（lock_mode）标识通常有以下几种：<br>`S`：共享（Shared）锁，允许多个事务同时持有该锁，用于读取操作。<br>`X`：独占（Exclusive）锁，只允许一个事务持有该锁，用于写入或修改操作。<br>`<span class="hljs-keyword">IS</span>`：意向共享（Intention Shared）锁，表示事务打算在表或行级别获取共享锁。<br>`IX`：意向独占（Intention Exclusive）锁，表示事务打算在表或行级别获取独占锁。<br>AUTO_INC：自增锁，用于控制自增值的分配。<br><br><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 查看数据库中锁的信息（因数据库版本不同略有差异）<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> performance_schema.data_locks;<br><br><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 查看数据库中等待锁的事务信息<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> performance_schema.data_lock_waits;<br><br><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 这里的 trx_id 是要终止的事务的事务 ID<br>KILL trx_id;<br></code></pre></td></tr></table></figure>
 
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>意向锁<br>TODO</p>
+<h3 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h3><p>当执行插入、更新、删除操作：先给表加上<code>意向独占锁</code>，然后对该记录加<code>独占锁</code>。<br>而普通的 select 是不会加行级锁的，<code>普通的 select 语句是利用 MVCC 实现一致性读</code>，是<code>无锁</code>的。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 先给表上加意向共享锁，然后对表中被读取的记录加共享锁<br><span class="hljs-keyword">select</span> ... lock <span class="hljs-keyword">in</span> share mode;<br><br><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 先给表上加意向独占锁，然后对表中被操作的记录加独占锁<br><span class="hljs-keyword">select</span> ... <span class="hljs-keyword">for</span> <span class="hljs-keyword">update</span>;<br></code></pre></td></tr></table></figure>
+<p>意向共享锁，意向独占锁，均是<code>表级锁</code>:</p>
+<ul>
+<li>它们和行级的共享锁和独占锁<code>不冲突</code></li>
+<li>意向锁之间也<code>不冲突</code>，但和共享表锁（<code>lock tables ... read</code>）和独占表锁（<code>lock tables ... write</code>）<code>会冲突</code><br>表锁和行锁是满足<code>读读共享</code>，<code>读写互斥</code>，<code>写写互斥</code>。</li>
+</ul>
+<p>意向锁的目的：<code>为了快速判断表里是否有记录被加锁</code></p>
+<h3 id="AUTO-INC-锁"><a href="#AUTO-INC-锁" class="headerlink" title="AUTO-INC 锁"></a>AUTO-INC 锁</h3><p>TODO</p>
 
             </div>
             <hr>
