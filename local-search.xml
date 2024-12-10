@@ -8,13 +8,25 @@
     <link href="/blog/2024/12/10/RPC/"/>
     <url>/blog/2024/12/10/RPC/</url>
     
-    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><p>RPC (Remote Procedure Call) 远程过程调用</p><img src="/blog/2024/12/10/RPC/graph_1.png" class="graph_1.png.png">]]></content>
+    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><p>RPC (Remote Procedure Call) 远程过程调用，计算机通信协议，允许计算机程序调用另一个地址空间（通常是共享网络的另一台机器上）的程序，就像调用本地程序一样。</p><h2 id="RPC-框架实现思路"><a href="#RPC-框架实现思路" class="headerlink" title="RPC 框架实现思路"></a>RPC 框架实现思路</h2><h3 id="基本设计"><a href="#基本设计" class="headerlink" title="基本设计"></a>基本设计</h3><p>在一开始，有服务消费者和服务提供者两个角色：</p><img src="/blog/2024/12/10/RPC/graph_1.png" class="graph_1.png.png"><p>消费者想要调用提供者的服务，这就需要提供者启动一个<code>web 服务</code>，然后通过发送 HTTP 或者其他协议的<code>网络请求</code>来调用：</p><img src="/blog/2024/12/10/RPC/graph_2.png" class="graph_2.png.png"><p>但提供者往往不止单一服务，若有多个服务和方法，那么每个接口和方法都要单独写一个接口？</p><p>其实不然，可以提供一个<strong>统一的服务调用接口</strong>，通过<code>请求处理器</code>根据客户端的请求参数来进行不同的处理，调用不同的服务和方法。</p><p>可以在服务提供者程序维护一个<code>本地服务注册器</code>，记录服务和对应实现类的<strong>映射</strong>:</p><img src="/blog/2024/12/10/RPC/graph_3.png" class="graph_3.png.png"><p>为了简化消费者发送请求的代码，<strong>实现类似本地调用的体验</strong>，可以基于<code>代理模式</code>，为消费者要调用的接口生成一个代理对象，有代理对象完成请求和响应的过程。</p><p>所谓<code>代理</code>，简单理解为声明式编程，就是有人帮你做事，你不用关心他具体是怎么做的，只需要告诉它你要做什么，它帮你完成。</p><p>至此，一个最基础的 RPC 框架构图诞生：</p><img src="/blog/2024/12/10/RPC/graph_4.png" class="graph_4.png.png"><h3 id="什么是-RPC-框架，它有什么优点？"><a href="#什么是-RPC-框架，它有什么优点？" class="headerlink" title="什么是 RPC 框架，它有什么优点？"></a>什么是 RPC 框架，它有什么优点？</h3>]]></content>
     
+    
+    <categories>
+      
+      <category>分布式</category>
+      
+    </categories>
     
     
     <tags>
       
-      <tag>分布式 通信 协议 网络</tag>
+      <tag>分布式</tag>
+      
+      <tag>通信</tag>
+      
+      <tag>协议</tag>
+      
+      <tag>网络</tag>
       
     </tags>
     
