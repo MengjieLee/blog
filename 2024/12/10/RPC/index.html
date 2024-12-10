@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      414 字
+      1.6k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      16
        分钟
     </span>
   
@@ -235,8 +235,11 @@
             <h1 style="display: none">RPC</h1>
             
             <div class="markdown-body">
-              <h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><p>RPC (Remote Procedure Call) 远程过程调用，计算机通信协议，允许计算机程序调用另一个地址空间（通常是共享网络的另一台机器上）的程序，就像调用本地程序一样。</p>
-<h2 id="RPC-框架实现思路"><a href="#RPC-框架实现思路" class="headerlink" title="RPC 框架实现思路"></a>RPC 框架实现思路</h2><h3 id="基本设计"><a href="#基本设计" class="headerlink" title="基本设计"></a>基本设计</h3><p>在一开始，有服务消费者和服务提供者两个角色：</p>
+              <h2 id="什么是-RPC-框架，它有什么优点？"><a href="#什么是-RPC-框架，它有什么优点？" class="headerlink" title="什么是 RPC 框架，它有什么优点？"></a>什么是 RPC 框架，它有什么优点？</h2><p>RPC (Remote Procedure Call) 远程过程调用，计算机通信协议，允许计算机程序调用另一个地址空间（通常是共享网络的另一台机器上）的程序，就像调用本地程序一样，快速开发分布式系统。</p>
+<p>此外，RPC 框架还具有以下优点：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">* </span>提高性能：高效的 NIO 非阻塞网络模型，相较于 JSON 性能更好的 Protobuf序列化/反序列化机制，以及异步处理请求响应提高吞吐量<br><span class="hljs-bullet">* </span>额外功能：负载均衡、服务发现、容错机制等<br><span class="hljs-bullet">* </span>动态扩展 SPI：自定义负载均衡和序列化协议<br></code></pre></td></tr></table></figure>
+
+<h2 id="RPC-框架实现思路"><a href="#RPC-框架实现思路" class="headerlink" title="RPC 框架实现思路"></a>RPC 框架实现思路</h2><p>在一开始，有服务消费者和服务提供者两个角色：</p>
 <img src="/blog/2024/12/10/RPC/graph_1.png" srcset="/blog/img/loading.gif" class="graph_1.png.png">
 
 <p>消费者想要调用提供者的服务，这就需要提供者启动一个<code>web 服务</code>，然后通过发送 HTTP 或者其他协议的<code>网络请求</code>来调用：</p>
@@ -252,7 +255,23 @@
 <p>至此，一个最基础的 RPC 框架构图诞生：</p>
 <img src="/blog/2024/12/10/RPC/graph_4.png" srcset="/blog/img/loading.gif" class="graph_4.png.png">
 
-<h3 id="什么是-RPC-框架，它有什么优点？"><a href="#什么是-RPC-框架，它有什么优点？" class="headerlink" title="什么是 RPC 框架，它有什么优点？"></a>什么是 RPC 框架，它有什么优点？</h3>
+<h2 id="RPC-和-HTTP-有什么区别？-RPC-工作在-OSI-哪一层？"><a href="#RPC-和-HTTP-有什么区别？-RPC-工作在-OSI-哪一层？" class="headerlink" title="RPC 和 HTTP 有什么区别？ RPC 工作在 OSI 哪一层？"></a>RPC 和 HTTP 有什么区别？ RPC 工作在 OSI 哪一层？</h2><p>首先，<code>OSI 基本工作流</code>介绍如下：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">* </span>第七层：应用层，HTTP, FTP, SSH, DNS<br><span class="hljs-bullet">* </span>第六层：表示层，ASCII, JPEG 等<br><span class="hljs-bullet">* </span>第五层：会话层，RPC(远程过程调用), SQL(结构化查询语言), NFS(网络文件系统), ASP(活动服务器页面)<br><span class="hljs-bullet">* </span>第四层：传输层，TCP/UDP<br><span class="hljs-bullet">* </span>第三层：网络层，IP 寻址，ARP(地址解析协议)<br><span class="hljs-bullet">* </span>第二层：数据链路层，MAC 寻址<br><span class="hljs-bullet">* </span>第一层：物理层，定义了物理传输介质、传输速率、传输距离等<br></code></pre></td></tr></table></figure>
+
+<p>在新的 TCP/IP 模型中，会话层、表示层和应用层合并为应用层，因此 RPC 和 HTTP 都属于应用层协议。</p>
+<p>但它们在设计目的、实现方式和使用场景有明显区别：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">1）设计目的：<br><span class="hljs-bullet">- </span>RPC：用于分布式系统中实现远程方法调用，使得应用程序能够像调用本地方法一样调用远程服务<br><span class="hljs-bullet">- </span>HTTP：用于 C/S 之间传输超文本文档，用于在 Web 应用程序之间进行通信<br><br>2）实现方式：<br><span class="hljs-bullet">- </span>RPC：自定义通信协议和编码机制以提供更高性能，通常使用二进制序列化<br><span class="hljs-bullet">- </span>HTTP：基于 TCP 协议，通过请求-响应模型进行通信，采用文本格式的消息头和消息体<br>直截了当的说，HTTP 只是 RPC 框架实现方式之一。<br><br>3）使用场景：<br><span class="hljs-bullet">- </span>RPC：服务 E2E 通信<br><span class="hljs-bullet">- </span>HTTP：可同时运用于服务端、后端和前端的通信<br></code></pre></td></tr></table></figure>
+
+<h2 id="RPC-核心架构设计和模块介绍？其相互之间的关系？"><a href="#RPC-核心架构设计和模块介绍？其相互之间的关系？" class="headerlink" title="RPC 核心架构设计和模块介绍？其相互之间的关系？"></a>RPC 核心架构设计和模块介绍？其相互之间的关系？</h2><h3 id="核心架构设计模块设计"><a href="#核心架构设计模块设计" class="headerlink" title="核心架构设计模块设计"></a>核心架构设计模块设计</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">* </span>消费者代理模块：基于代理模式实现，在服务消费者对服务者提供者进行远程调用时，不需要考虑实现过程的细节，直接调用即可<br><span class="hljs-bullet">* </span>注册中心：基于 ETCD 实现注册中心，服务者将自己的地址，接口，分组等详细信息上报到注册中心模块，并且在服务上下线的时候通知到注册中心，注册中心会依据订阅相关的服务给消费者发送动态的通知<br><span class="hljs-bullet">* </span>本地服务注册器：服务提供端存储服务名称和实现类的映射关系，便于后续根据服务名获取到对应的实现类，从而通过反射完成调用<br><span class="hljs-bullet">* </span>路由模块：也称负载均衡，当有多个服务和服务提供者节点时，服务消费者需要确认请求哪一个服务和节点<br><span class="hljs-bullet">* </span>自定义 RPC 协议：自主实现基于 TCP 和自定义请求头的网络传输协议，并自主实现堆字节数组的编码/解码器，达到实现更高性能的请求和响应 <br><span class="hljs-bullet">* </span>请求处理器：服务提供者在接收到请求后，可以通过请求处理器解析请求，从本地服务注册器中找到服务实现类并调用之<br><span class="hljs-bullet">* </span>重试和容错模块：在调用出错时，进行重试、降级、故障转译等操作，保障服务的可用性和稳定性<br><span class="hljs-bullet">* </span>启动器模块：基于装饰器，快速引入 RPC 框架到项目中<br></code></pre></td></tr></table></figure>
+
+<h3 id="模块之间的关系"><a href="#模块之间的关系" class="headerlink" title="模块之间的关系"></a>模块之间的关系</h3><ol>
+<li>服务提供者启动服务：启动基于 TCP 的服务器，并将服务信息注册到本地服务注册器和注册中心</li>
+<li>服务消费者调用服务：消费者代理模块从注册中心获取到服务提供者的调用信息列表，通过负载均衡算法确定一个调用地址，并构造基于 RPC 协议的请求，然后发送请求，消息经过编码器处理</li>
+<li>服务提供者处理请求：服务提供者通过解码器还原消息，根据消息内容，从本地服务注册器找到服务实现类，通过反射进行调用</li>
+<li>服务提供者响应请求：服务提供者将调用结果进行封装，通过编码器处理响应消息；服务消费者收到消息后，通过解码器还原消息，从而完成调用</li>
+<li>服务消费端重试和容错：如果调用失败，服务消费端会根据预设好的策略进行重试、降级、故障转译等容错操作</li>
+</ol>
+
             </div>
             <hr>
             <div>
