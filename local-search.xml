@@ -5,12 +5,18 @@
   
   <entry>
     <title>RPC</title>
-    <link href="/blog/2024/12/10/projects/RPC/RPC/"/>
-    <url>/blog/2024/12/10/projects/RPC/RPC/</url>
+    <link href="/blog/2024/12/10/RPC/"/>
+    <url>/blog/2024/12/10/RPC/</url>
     
-    <content type="html"><![CDATA[<p>RPC (Remote Procedure Call) 远程过程调用</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="知识总览"><a href="#知识总览" class="headerlink" title="知识总览"></a>知识总览</h2><p>RPC (Remote Procedure Call) 远程过程调用</p><img src="/blog/2024/12/10/RPC/graph_1.png" class="graph_1.png.png">]]></content>
     
     
+    
+    <tags>
+      
+      <tag>分布式 通信 协议 网络</tag>
+      
+    </tags>
     
   </entry>
   
