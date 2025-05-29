@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      533 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      5
        分钟
     </span>
   
@@ -235,12 +235,63 @@
             <h1 style="display: none">数据开发</h1>
             
             <div class="markdown-body">
-              
+              <h2 id="知识储备"><a href="#知识储备" class="headerlink" title="知识储备"></a>知识储备</h2><div class="note note-success">
+            <p>这会是一个逐步深入，不断积累知识点和经验的过程</p>
+          </div>
+<h3 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h3><ul>
+<li><code>Go</code>: 高性能计算和分布式系统开发</li>
+<li><code>Python</code>: 数据处理和分析<h3 id="线性数据结构"><a href="#线性数据结构" class="headerlink" title="线性数据结构"></a>线性数据结构</h3></li>
+<li><code>Array</code>: 连续存储，随机寻址高效（O(1)），插入删除低效（O(n)）<ul>
+<li>分布式计算框架 Hadoop <code>MapReduce</code>、<code>Spark</code> 中用到 <code>Array</code> 存储批量数据，如日志切片、数值型特征等</li>
+<li>结合<code>向量化运算</code>，如 Spark 的 <code>Vector</code> 操作优化数据处理效率</li>
+</ul>
+</li>
+<li><code>Linked List</code>: 非连续存储，随机寻址低效（O(n)），插入删除高效（O(1)）<ul>
+<li>内存管理中模拟链表结构，如 Spark 的 <code>内存缓存链</code>，动态管理数据块</li>
+<li>分布式系统的元数据管理，如 HDFS 的 <code>Block</code> 分片，记录文件分块的位置信息<h3 id="树形数据结构"><a href="#树形数据结构" class="headerlink" title="树形数据结构"></a>树形数据结构</h3></li>
+</ul>
+</li>
+<li><code>Binary Tree</code>: 每个结点最多两个子结点，常见类型包括 <code>Binary Search Tree</code>、<code>AVL Tree</code>、<code>Red-Black Tree</code> 等<ul>
+<li>分布式索引构建，如 Elasticsearch 的倒排索引 <code>Inverted Index</code> 基于红黑树优化</li>
+<li>数据排序与查找，在 Spark 的 <code>sortByKey</code> 中，底层可能用树结构优化排序性能</li>
+<li>数据库成本优化器(<code>CBO</code>) 使用决策树进行词法分析，生成最优执行计划</li>
+</ul>
+</li>
+<li><code>Heap</code>: 完全二叉树，分为最大堆（父&gt;=子）和最小堆（父&lt;=子）<ul>
+<li>海量数据 <code>Top-N</code> 问题，如用最小堆筛选日志中的高频词（MapReduce 流程 Map → Combine(Optional) → Shuffle → Reduce 中的 <code>Combine</code> 阶段的局部 Top-N），在 Map 端提前局部聚合并减少网络 IO 开销</li>
+<li>资源调度，<code>YARN 的调度器</code>基于最大堆从堆顶取出优先级最高的任务去分配资源</li>
+<li>Spark Streaming 的事件时间窗口（<code>Event Time Window</code>）用堆管理超时数据<h3 id="集合与映射结构"><a href="#集合与映射结构" class="headerlink" title="集合与映射结构"></a>集合与映射结构</h3></li>
+</ul>
+</li>
+<li><code>Set</code>: 元素唯一、无序（哈希集合）或有序（树集合）<ul>
+<li>去重处理，如 Spark 的 <code>distinct()</code> operation 算子对海量用户 ID 去重（底层基于<code>哈希集合</code>）</li>
+<li>交集/并集计算，在用户分群场景中，用集合运算快速计算不同群体的重叠部分</li>
+<li>TODO</li>
+</ul>
+</li>
+</ul>
+
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/blog/categories/%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91/">数据开发</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/blog/tags/%E6%95%B0%E6%8D%AE%E6%A1%86%E6%9E%B6/">数据框架</a>
+                    
+                      <a class="hover-with-bg" href="/blog/tags/%E6%95%B0%E6%8D%AE%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/">数据开发入门</a>
+                    
+                  </div>
                 
               </div>
               
